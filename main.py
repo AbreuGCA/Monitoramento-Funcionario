@@ -2,22 +2,32 @@ import tkinter as tk
 from status_page import StatusPage
 from monitoramento_page import MonitoramentoPage
 from permitidos_page import PermitidosPage
+from historico_leituras_page import HistoricoLeiturasPage  # Importa a nova página
 import paho.mqtt.client as mqtt
 
 def show_monitoramento():
     monitoramento_frame.grid(row=1, column=0, sticky='nsew')
     status_frame.grid_forget()
     permitidos_frame.grid_forget()
+    historico_frame.grid_forget()
 
 def show_status():
     status_frame.grid(row=1, column=0, sticky='nsew')
     monitoramento_frame.grid_forget()
     permitidos_frame.grid_forget()
+    historico_frame.grid_forget()
 
 def show_permitidos():
     permitidos_frame.grid(row=1, column=0, sticky='nsew')
     status_frame.grid_forget()
     monitoramento_frame.grid_forget()
+    historico_frame.grid_forget()
+
+def show_historico():
+    historico_frame.grid(row=1, column=0, sticky='nsew')
+    status_frame.grid_forget()
+    monitoramento_frame.grid_forget()
+    permitidos_frame.grid_forget()
 
 def sair():
     root.quit()
@@ -47,19 +57,21 @@ status_button.pack(side='left', padx=10, pady=5)
 permitidos_button = tk.Button(navbar, text="IDs Permitidos", command=show_permitidos, bg='gray', fg='white', font=("Arial", 14, "bold"))
 permitidos_button.pack(side='left', padx=10, pady=5)
 
+historico_button = tk.Button(navbar, text="Histórico de Leituras", command=show_historico, bg='gray', fg='white', font=("Arial", 14, "bold"))
+historico_button.pack(side='left', padx=10, pady=5)
+
 sair_button = tk.Button(navbar, text="Sair", command=sair, bg='gray', fg='white', font=("Arial", 14, "bold"))
 sair_button.pack(side='right', padx=10, pady=5)
 
 # Configurando o cliente MQTT
 client = mqtt.Client()
 client.connect("broker.hivemq.com", 1883, 60)
-client.on_message = on_message
-client.subscribe("empresa/ids")
 client.loop_start()
 
 status_frame = StatusPage(root, client)
 monitoramento_frame = MonitoramentoPage(root)
-permitidos_frame = PermitidosPage(root, client)  # Passando o cliente MQTT para a página de IDs permitidos
+permitidos_frame = PermitidosPage(root, client)
+historico_frame = HistoricoLeiturasPage(root, client)  # Adicionando a nova página
 
 show_monitoramento()  # Exibindo a página de monitoramento inicialmente
 
