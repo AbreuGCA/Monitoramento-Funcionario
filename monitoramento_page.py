@@ -39,7 +39,6 @@ class MonitoramentoPage(tk.Frame):
         print(msg.topic + " " + str(msg.payload))
         valor = int(msg.payload)
 
-        # Determinando a mensagem com base no valor recebido do tópico MQTT
         if valor == 1:
             message = "Cartão autorizado lido"
             bg_color = 'green'
@@ -47,14 +46,10 @@ class MonitoramentoPage(tk.Frame):
             message = "Nenhuma leitura de cartão"
             bg_color = 'red'
 
-        # Obtendo o horário atual
         current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        # Concatenando o horário e a mensagem em uma única string
         interaction_message = f"{current_time}: {message}"
 
-        # Adicionando a interação à lista
         self.interactions_list.insert(tk.END, interaction_message)
 
-        # Atualizando a cor do cartão
         self.card.config(bg=bg_color)

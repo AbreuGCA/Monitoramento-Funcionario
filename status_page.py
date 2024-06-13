@@ -20,11 +20,12 @@ class StatusPage(tk.Frame):
         self.set_wifi_button = tk.Button(self, text="Definir Wi-Fi", command=self.definir_wifi, bg='gray', fg='white', font=("Arial", 12))
         self.set_wifi_button.pack(pady=10)
 
-        # Subscrever ao tópico relevante e definir o callback de mensagem
+        self.refresh_button = tk.Button(self, text="Refresh", command=self.atualizar_status, bg='gray', fg='white', font=("Arial", 12))
+        self.refresh_button.pack(pady=10)
+
         self.mqtt_client.subscribe("empresa/wifi")
         self.mqtt_client.message_callback_add("empresa/wifi", self.on_wifi_message)
 
-        # Obter o status atual
         self.atualizar_status()
 
     def on_wifi_message(self, client, userdata, msg):

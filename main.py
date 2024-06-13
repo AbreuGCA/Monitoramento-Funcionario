@@ -2,7 +2,7 @@ import tkinter as tk
 from status_page import StatusPage
 from monitoramento_page import MonitoramentoPage
 from permitidos_page import PermitidosPage
-from historico_leituras_page import HistoricoLeiturasPage  # Importa a nova página
+from historico_leituras_page import HistoricoLeiturasPage 
 import paho.mqtt.client as mqtt
 
 def show_monitoramento():
@@ -33,9 +33,8 @@ def sair():
     root.quit()
 
 def on_message(client, userdata, message):
-    # Quando uma mensagem é recebida no tópico "empresa/ids", atualiza a lista de IDs permitidos na página correspondente
-    permitidos_frame.permitidos_list.delete(0, tk.END)  # Limpa a lista atual
-    ids = message.payload.decode('utf-8').split(", ")  # Converte a mensagem recebida em uma lista de IDs
+    permitidos_frame.permitidos_list.delete(0, tk.END) 
+    ids = message.payload.decode('utf-8').split(", ") 
     for id in ids:
         permitidos_frame.permitidos_list.insert(tk.END, id)
 
@@ -63,7 +62,6 @@ historico_button.pack(side='left', padx=10, pady=5)
 sair_button = tk.Button(navbar, text="Sair", command=sair, bg='gray', fg='white', font=("Arial", 14, "bold"))
 sair_button.pack(side='right', padx=10, pady=5)
 
-# Configurando o cliente MQTT
 client = mqtt.Client()
 client.connect("broker.hivemq.com", 1883, 60)
 client.loop_start()
@@ -71,8 +69,8 @@ client.loop_start()
 status_frame = StatusPage(root, client)
 monitoramento_frame = MonitoramentoPage(root)
 permitidos_frame = PermitidosPage(root, client)
-historico_frame = HistoricoLeiturasPage(root, client)  # Adicionando a nova página
+historico_frame = HistoricoLeiturasPage(root, client) 
 
-show_monitoramento()  # Exibindo a página de monitoramento inicialmente
+show_monitoramento()  
 
 root.mainloop()
